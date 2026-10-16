@@ -1,0 +1,21 @@
+:root {
+  --text: #eee;
+  --radius-xs: 4px;
+  --radius-sm: 5px;
+  --radius-md: 6px;
+  --radius-lg: 7px;
+  --radius-xl: 8px;
+  --radius-2xl: 10px;
+  --radius-3xl: 15px;
+  --radius-4xl: 20px;
+  --radius-pill: 25px;
+  --radius-circle: 50%;
+  --dur-fast: 100ms;
+  --dur-base: 200ms;
+  --dur-slow: 300ms;
+  --ease-win: cubic-bezier(0.9, 0, 0.1, 1);
+
+  --button-bg: #eeeeee40;
+  --button-hover-border: #ffffff50;
+  --button-active-bg: #eeeeee70;
+}

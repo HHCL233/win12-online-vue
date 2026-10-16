@@ -8,6 +8,11 @@ const router = createRouter({
       component: () => import('@/views/WinStartupLoading.vue'),
       name: 'loading',
     },
+    {
+      path: '/login',
+      component: () => import('@/views/WinLocking.vue'),
+      name: 'login',
+    },
   ],
 })
 
