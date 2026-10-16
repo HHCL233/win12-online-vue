@@ -25,6 +25,8 @@ import WinButton from '@/components/WinButton.vue'
   justify-content: center;
   flex-direction: column;
   align-items: center;
+  position: fixed;
+  top: 0;
   #login-items {
     display: flex;
     box-sizing: border-box;

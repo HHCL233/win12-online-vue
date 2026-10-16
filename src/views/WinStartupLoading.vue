@@ -14,6 +14,8 @@ import WinLogo from '@/components/WinLogo.vue'
 #win-startuup-loading {
   width: 100%;
   height: 100%;
+  position: fixed;
+  top: 0;
   background-color: black;
   cursor: none;
   padding: 24px;
