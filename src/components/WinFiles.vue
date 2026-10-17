@@ -1,8 +1,16 @@
 <script setup lang="ts">
+import type { Files } from '@/typed/file'
+import { isOverlapping } from '@/utils/intersect'
+import type { ComponentPublicInstance } from 'vue'
 import { ref, useTemplateRef } from 'vue'
 
 const props = defineProps<{
   layout?: 'details' | 'mediumIcons'
+  files: Files
+  isColumn?: boolean
+}>()
+const emit = defineEmits<{
+  openFile: [id: string]
 }>()
 let originX = 0
 let originY = 0
@@ -12,6 +20,31 @@ const startY = ref(0)
 const selectionWidth = ref(0)
 const selectionHeight = ref(0)
 const selectionRef = useTemplateRef('selection')
+const fileElData: Record<string, HTMLDivElement> = {}
+let selectId: string[] = []
+
+const checkFileSelect = () => {
+  selectId = []
+  // 检测选择框内存在的文件
+  for (const [id, el] of Object.entries(fileElData)) {
+    const rect = el.getBoundingClientRect()
+    if (
+      isOverlapping(rect, {
+        top: startY.value,
+        left: startX.value,
+        height: selectionHeight.value,
+        width: selectionWidth.value,
+        x: startX.value,
+        y: startY.value,
+        bottom: startY.value + selectionHeight.value,
+        right: startX.value + selectionWidth.value,
+        toJSON: () => {},
+      })
+    ) {
+      selectId.push(id)
+    }
+  }
+}
 
 const onPointerDown = (event: PointerEvent) => {
   isSelection.value = true
@@ -21,6 +54,9 @@ const onPointerDown = (event: PointerEvent) => {
   originY = event.clientY
   selectionWidth.value = 0
   selectionHeight.value = 0
+
+  // 检测选择框内存在的文件
+  checkFileSelect()
 }
 
 const onPointerMove = (event: PointerEvent) => {
@@ -30,6 +66,7 @@ const onPointerMove = (event: PointerEvent) => {
   const currentX = event.clientX
   const currentY = event.clientY
 
+  // 设置选择框开始位置和大小
   startX.value = Math.min(originX, currentX)
   startY.value = Math.min(originY, currentY)
   selectionWidth.value = Math.abs(currentX - originX)
@@ -38,6 +75,9 @@ const onPointerMove = (event: PointerEvent) => {
   if (selectionWidth.value >= 10 || selectionHeight.value >= 10) {
     selectionRef.value.setPointerCapture(event.pointerId)
   }
+
+  // 检测选择框内存在的文件
+  checkFileSelect()
 }
 
 const onPointerUp = () => {
@@ -51,19 +91,33 @@ const onPointerUp = () => {
   selectionWidth.value = 0
   selectionHeight.value = 0
 }
+
+const registerPosition = (el: Element | ComponentPublicInstance | null, id: string) => {
+  if (!(el instanceof HTMLDivElement)) return
+  // 将元素注册到对象内
+  fileElData[id] = el
+}
 </script>
 
 <template>
   <div
     class="win-files"
-    :class="props.layout ?? 'details'"
+    :class="[props.layout ?? 'details', isColumn ? 'column' : '']"
     @pointerdown="onPointerDown"
     @pointermove="onPointerMove"
     @pointerup="onPointerUp"
   >
-    <div class="win-file" :class="props.layout ?? 'details'" v-for="value in 5" :key="value">
-      <div class="icon" />
-      <span class="name">Program Files</span>
+    <div
+      class="win-file"
+      :class="[props.layout ?? 'details', selectId.includes(file.id) ? 'select' : '']"
+      v-for="file in props.files"
+      :key="`${file.id}-${props.layout}`"
+      :ref="(el) => registerPosition(el, file.id)"
+      tabindex="1"
+      @dblclick="emit(file.id)"
+    >
+      <img class="icon" :src="file.icon" draggable="false" />
+      <span class="name">{{ file.name }}</span>
     </div>
     <div
       class="files-selection"
@@ -87,46 +141,60 @@ const onPointerUp = () => {
   height: 100%;
   width: 100%;
   position: relative;
-  grid-auto-flow: column;
+  overflow: hidden;
+  gap: 4px;
+  &.column {
+    grid-auto-flow: column;
+  }
   &.details {
     grid-template-columns: 1fr;
-    grid-template-rows: repeat(auto-fill, 36px);
+    grid-template-rows: repeat(auto-fill, 40px);
   }
   &.mediumIcons {
     grid-template-columns: repeat(auto-fill, 80px);
-    grid-template-rows: repeat(auto-fill, 80px);
+    grid-template-rows: repeat(auto-fill, 120px);
   }
   .win-file {
     display: flex;
     align-items: center;
     &.details {
+      .icon {
+        height: 100%;
+        width: auto;
+      }
       flex-direction: row;
     }
     &.mediumIcons {
+      .icon {
+        width: 100%;
+        height: auto;
+      }
       text-align: center;
       flex-direction: column;
     }
+    &.select {
+      border: 2px solid #2983ccbd;
+      background-color: #2983cc67;
+    }
+    .icon {
+      aspect-ratio: 1/1;
+    }
+    .name {
+      font-size: 14px;
+    }
+    border: 2px solid transparent;
     height: 100%;
     width: 100%;
     padding: 4px;
     box-sizing: border-box;
     gap: 4px;
-    .icon {
-      height: 100%;
-      aspect-ratio: 1/1;
-      background-image: url('/icon/folder.svg');
-      background-repeat: no-repeat;
-      background-size: contain;
-    }
-    .name {
-      font-size: 14px;
-    }
+    border-radius: 6px;
   }
   .files-selection {
     border: 2px solid #2983cc;
     background-color: #ffffff20;
     border-radius: var(--radius-sm);
-    position: absolute;
+    position: fixed;
     top: var(--start-x);
     left: var(--start-y);
     width: var(--selection-width);
