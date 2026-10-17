@@ -1,0 +1,32 @@
+@use 'sass:map';
+
+$themes: (
+  light: (
+    button: (
+      bg: #eeeeee69,
+      hoverBg: #ffffff7e,
+      activeBg: #eeeeee70,
+      textColor: #ffffff,
+      radius: 15px,
+    ),
+  ),
+  dark: (
+    button: (
+      bg: #eeeeee40,
+      hoverBg: #ffffff50,
+      activeBg: #eeeeee70,
+      textColor: #ffffff,
+      radius: 15px,
+    ),
+  ),
+);
+@mixin useTheme($component) {
+  @each $key, $value in $themes {
+    $map: map.get($value, $component);
+    @each $mapKey, $mapValue in $map {
+      [data-theme='#{$key}'] & {
+        --#{$mapKey}: #{$mapValue};
+      }
+    }
+  }
+}

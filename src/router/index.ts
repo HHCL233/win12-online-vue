@@ -13,6 +13,11 @@ const router = createRouter({
       component: () => import('@/views/WinLocking.vue'),
       name: 'login',
     },
+    {
+      path: '/desktop',
+      component: () => import('@/views/WinDesktop.vue'),
+      name: 'desktop',
+    },
   ],
 })
 

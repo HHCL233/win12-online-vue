@@ -5,16 +5,16 @@
 </template>
 
 <style scoped lang="scss">
+@use '@/styles/config.scss' as config;
+
 .win-button {
+  @include config.useTheme('button');
   corner-shape: squircle;
   width: 64px;
-  background-color: var(--button-bg);
-  border-radius: var(--radius-3xl);
   padding: 6px 12px;
   cursor: default;
   text-align: center;
   transition: 80ms;
-  color: var(--text);
   text-decoration: none;
   border: 3px transparent solid;
   height: 100%;
@@ -22,11 +22,14 @@
   text-align: center;
   padding: 5.5px 8px;
   font-size: 15.8px;
+  border-radius: var(--radius);
+  background-color: var(--bg);
+  color: var(--textColor);
   &:hover {
-    border-color: var(--button-hover-border);
+    background-color: var(--hoverBg);
   }
   &:active {
-    background-color: var(--button-active-bg);
+    background-color: var(--activeBg);
   }
 }
 </style>

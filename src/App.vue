@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import { onMounted } from 'vue'
 import { useRouter } from 'vue-router'
+import { sleep } from './utils/time'
 
 const router = useRouter()
 
-onMounted(() => {
-  setTimeout(() => {
-    router.push('/login')
-  }, 400)
+onMounted(async () => {
+  await sleep(400)
+  router.push('/login')
 })
 </script>
 

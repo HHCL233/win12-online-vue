@@ -1,5 +1,12 @@
 <script setup lang="ts">
 import WinButton from '@/components/WinButton.vue'
+import { useRouter } from 'vue-router'
+
+const router = useRouter()
+
+const goDesktop = () => {
+  router.push('/desktop')
+}
 </script>
 
 <template>
@@ -7,7 +14,7 @@ import WinButton from '@/components/WinButton.vue'
     <div id="login-items">
       <img src="/icon/user.svg" class="user" />
       <span class="name">Administrator</span>
-      <WinButton class="button">登录</WinButton>
+      <WinButton class="button" @click="goDesktop">登录</WinButton>
     </div>
   </div>
 </template>
