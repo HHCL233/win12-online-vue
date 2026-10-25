@@ -8,6 +8,9 @@ importers:
 
   .:
     dependencies:
+      '@iconify-vue/fluent':
+        specifier: gitlab:iconify-icons/vue#fluent
+        version: https://gitlab.com/api/v4/projects/iconify-icons%2Fvue/repository/archive.tar.gz?sha=690d64845b97f2d9f090930a1d425e3fbc355999(vue@3.5.44(typescript@6.0.3))
       pinia:
         specifier: ^4.0.3
         version: 4.1.0(@vue/devtools-api@8.2.1)(typescript@6.0.3)(vue@3.5.44(typescript@6.0.3))
@@ -293,6 +296,18 @@ packages:
   '@humanwhocodes/retry@0.4.3':
     resolution: {integrity: sha512-bV0Tgo9K4hfPCek+aMAn81RppFKv2ySDQeMoSZuvTASywNTnVJCArCZE2FWqpvIatKu7VMRLWlR1EazvVhDyhQ==}
     engines: {node: '>=18.18'}
+
+  '@iconify-vue/fluent@https://gitlab.com/api/v4/projects/iconify-icons%2Fvue/repository/archive.tar.gz?sha=690d64845b97f2d9f090930a1d425e3fbc355999':
+    resolution: {tarball: https://gitlab.com/api/v4/projects/iconify-icons%2Fvue/repository/archive.tar.gz?sha=690d64845b97f2d9f090930a1d425e3fbc355999}
+    version: 1.0.7
+
+  '@iconify/css-vue@1.0.3':
+    resolution: {integrity: sha512-fi9qm639zgAdmonbD7ByuE9tt90uFUHSynS9dEDm4CZX8+03jD5pxv2hZZ07eJv9PPAwCsuEauLD9tYoXWBfyg==}
+    peerDependencies:
+      vue: '>=3.0.0'
+
+  '@iconify/types@2.0.0':
+    resolution: {integrity: sha512-+wluvCrRhXrhyOmRDJ3q8mux9JkKy5SJ/v8ol2tu4FVjyYvtEzkc/3pK15ET6RKg4b4w4BmTk1+gsCUhf21Ykg==}
 
   '@jridgewell/gen-mapping@0.3.13':
     resolution: {integrity: sha512-2kkt/7niJ6MgEPxF0bYdQ6etZaA+fQvDcLKckhy1yIQOzaoKjBBjSj63/aLVjYE3qhRt5dvM+uUyfCg6UKCBbA==}
@@ -2194,6 +2209,19 @@ snapshots:
   '@humanwhocodes/module-importer@1.0.1': {}
 
   '@humanwhocodes/retry@0.4.3': {}
+
+  '@iconify-vue/fluent@https://gitlab.com/api/v4/projects/iconify-icons%2Fvue/repository/archive.tar.gz?sha=690d64845b97f2d9f090930a1d425e3fbc355999(vue@3.5.44(typescript@6.0.3))':
+    dependencies:
+      '@iconify/css-vue': 1.0.3(vue@3.5.44(typescript@6.0.3))
+    transitivePeerDependencies:
+      - vue
+
+  '@iconify/css-vue@1.0.3(vue@3.5.44(typescript@6.0.3))':
+    dependencies:
+      '@iconify/types': 2.0.0
+      vue: 3.5.44(typescript@6.0.3)
+
+  '@iconify/types@2.0.0': {}
 
   '@jridgewell/gen-mapping@0.3.13':
     dependencies:

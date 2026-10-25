@@ -25,6 +25,8 @@
   border-radius: var(--radius);
   background-color: var(--bg);
   color: var(--textColor);
+  backdrop-filter: blur(8px);
+  box-shadow: 0 1px 2px var(--shadowColor);
   &:hover {
     background-color: var(--hoverBg);
   }

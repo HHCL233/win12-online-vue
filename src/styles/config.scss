@@ -3,11 +3,12 @@
 $themes: (
   light: (
     button: (
-      bg: #eeeeee69,
-      hoverBg: #ffffff7e,
-      activeBg: #eeeeee70,
-      textColor: #ffffff,
-      radius: 15px,
+      bg: #d8d8d891,
+      hoverBg: #c2c2c291,
+      activeBg: #adadad91,
+      textColor: black,
+      shadowColor: #f4f4f400,
+      radius: var(--radius-3xl),
     ),
   ),
   dark: (
@@ -16,7 +17,7 @@ $themes: (
       hoverBg: #ffffff50,
       activeBg: #eeeeee70,
       textColor: #ffffff,
-      radius: 15px,
+      radius: var(--radius-3xl),
     ),
   ),
 );

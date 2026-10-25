@@ -24,6 +24,7 @@ const goDesktop = () => {
   width: 100%;
   height: 100%;
   background-image: url('/img/login.jpg');
+  background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
   display: flex;

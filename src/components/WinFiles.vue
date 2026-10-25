@@ -114,7 +114,7 @@ const registerPosition = (el: Element | ComponentPublicInstance | null, id: stri
       :key="`${file.id}-${props.layout}`"
       :ref="(el) => registerPosition(el, file.id)"
       tabindex="1"
-      @dblclick="emit(file.id)"
+      @dblclick="emit('openFile', file.id)"
     >
       <img class="icon" :src="file.icon" draggable="false" />
       <span class="name">{{ file.name }}</span>
