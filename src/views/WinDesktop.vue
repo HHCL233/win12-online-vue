@@ -3,10 +3,12 @@ import WinDock from '@/components/WinDock.vue'
 import WinFiles from '@/components/WinFiles.vue'
 import WinWindow from '@/components/WinWindow.vue'
 import { useConfigStore } from '@/stores/config'
+import { useWindowStore } from '@/stores/window'
 import { computed } from 'vue'
 
-const config = useConfigStore()
-const bgUrl = computed(() => `url(${config.config.bgUrl})`)
+const configStore = useConfigStore()
+const windowStore = useWindowStore()
+const bgUrl = computed(() => `url(${configStore.config.bgUrl})`)
 </script>
 
 <template>
@@ -17,25 +19,26 @@ const bgUrl = computed(() => `url(${config.config.bgUrl})`)
       isColumn
       :files="[
         {
-          name: '此电脑',
-          size: 0,
-          icon: '/icon/thispc.svg',
-          type: 'file',
-          child: [],
-          id: '1',
-        },
-        {
           name: '关于',
           size: 0,
           icon: '/icon/folder.svg',
           type: 'file',
           child: [],
-          id: '2',
+          id: 'about-win',
         },
       ]"
+      @openFile="windowStore.openNewWindow"
     />
     <WinDock class="dock" />
-    <WinWindow />
+    <WinWindow
+      v-for="(window, id) in windowStore.windowDatas"
+      :key="id"
+      :title="window.title"
+      :icon="window.icon"
+      :id="id"
+    >
+      <component :is="window.component" :props="window.componentProps"></component>
+    </WinWindow>
   </div>
 </template>
 

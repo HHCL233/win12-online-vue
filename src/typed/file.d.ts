@@ -3,9 +3,14 @@ export interface File {
   name: string
   size: number
   icon: string
-  type: 'folder' | 'file'
+  type: 'folder' | 'file' | 'driver'
   child?: Files
   content?: string
 }
 
 export type Files = File[]
+
+export interface ExeData {
+  _exe: string
+  [type: string]: unknown
+}

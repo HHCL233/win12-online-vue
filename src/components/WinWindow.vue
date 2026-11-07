@@ -4,6 +4,11 @@ import Maximize20RegularIcon from '@iconify-vue/fluent/maximize-20-regular'
 import Minimize20RegularIcon from '@iconify-vue/fluent/minimize-20-regular'
 import { computed, ref, useTemplateRef } from 'vue'
 
+const props = defineProps<{
+  icon: string
+  title: string
+  id: string
+}>()
 const lastMousePosition = {
   x: 0,
   y: 0,
@@ -22,9 +27,12 @@ const windowTitbar = useTemplateRef('windowTitbar')
 const startDragWindow = (event: PointerEvent) => {
   if (!windowTitbar.value) return
   windowTitbar.value.setPointerCapture(event.pointerId)
+  const rect = windowTitbar.value.getBoundingClientRect()
   startDrag = true
   lastMousePosition.x = event.clientX
   lastMousePosition.y = event.clientY
+  windowX.value = rect.x
+  windowY.value = rect.y
 }
 
 const dragWindow = (event: PointerEvent) => {
@@ -49,8 +57,8 @@ const endDragWindow = () => {
       @pointerdown="startDragWindow"
       @pointermove="dragWindow"
     >
-      <img class="icon" src="/icon/about.svg" />
-      <span class="title">关于 Win12 网页版</span>
+      <img class="icon" :src="props.icon" />
+      <span class="title">{{ props.title }}</span>
       <div class="titbar-control">
         <div tabindex="1" class="titbar-btn">
           <Minimize20RegularIcon class="btn-icon" height="1em" />
@@ -63,7 +71,7 @@ const endDragWindow = () => {
         </div>
       </div>
     </div>
-    <div class="content"></div>
+    <div class="content"><slot /></div>
   </div>
 </template>
 

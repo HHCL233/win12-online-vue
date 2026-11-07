@@ -10,6 +10,20 @@ $themes: (
       shadowColor: #f4f4f400,
       radius: var(--radius-3xl),
     ),
+    dock: (
+      outlineColor: #99999950,
+      shadowColor1: #44444460,
+      shadowColor2: #22222230,
+      bg: #f7f7f7bb,
+      hoverBg: #ebebebbb,
+      radius: var(--radius-2xl),
+    ),
+    files: (
+      borderColor: #2983ccbd,
+      bg: #2983cc67,
+      selectionBorderColor: #2983cc,
+      selectionBg: #ffffff20,
+    ),
   ),
   dark: (
     button: (
@@ -18,6 +32,14 @@ $themes: (
       activeBg: #eeeeee70,
       textColor: #ffffff,
       radius: var(--radius-3xl),
+    ),
+    dock: (
+      outlineColor: #99999950,
+      shadowColor1: #44444460,
+      shadowColor2: #22222230,
+      bg: #f7f7f7bb,
+      hoverBg: #ebebebbb,
+      radius: var(--radius-2xl),
     ),
   ),
 );

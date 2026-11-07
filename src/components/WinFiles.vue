@@ -137,6 +137,7 @@ const registerPosition = (el: Element | ComponentPublicInstance | null, id: stri
 @use '@/styles/config.scss' as config;
 
 .win-files {
+  @include config.useTheme('files');
   display: grid;
   height: 100%;
   width: 100%;
@@ -173,8 +174,8 @@ const registerPosition = (el: Element | ComponentPublicInstance | null, id: stri
       flex-direction: column;
     }
     &.select {
-      border: 2px solid #2983ccbd;
-      background-color: #2983cc67;
+      border: 2px solid var(--borderColor);
+      background-color: var(--bg);
     }
     .icon {
       aspect-ratio: 1/1;
@@ -191,8 +192,8 @@ const registerPosition = (el: Element | ComponentPublicInstance | null, id: stri
     border-radius: 6px;
   }
   .files-selection {
-    border: 2px solid #2983cc;
-    background-color: #ffffff20;
+    border: 2px solid var(--selectionBorderColor);
+    background-color: var(--selectionBg);
     border-radius: var(--radius-sm);
     position: fixed;
     top: var(--start-x);

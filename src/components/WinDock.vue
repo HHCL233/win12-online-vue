@@ -11,25 +11,28 @@
 </template>
 
 <style scoped lang="scss">
+@use '@/styles/config.scss' as config;
+
 .win-dock {
+  @include config.useTheme('dock');
   height: 40px;
   pointer-events: none;
   display: flex;
   justify-content: center;
   .dock-zone {
-    outline: 1px solid #99999950;
+    outline: 1px solid var(--outlineColor);
     box-shadow:
-      0 1px 2px #44444460,
-      0px 3px 25px 1px #22222230;
+      0 1px 2px var(--shadowColor1),
+      0px 3px 25px 1px var(--shadowColor2);
     display: flex;
-    background-color: #f7f7f7bb;
+    background-color: var(--bg);
     border-radius: 10px;
     backdrop-filter: blur(20px) saturate(2);
     align-items: center;
     pointer-events: all;
     transition: background-color 0.3s;
     &:hover {
-      background-color: #ebebebbb;
+      background-color: var(--hoverBg);
     }
     .dock-btn {
       padding: 4px;
