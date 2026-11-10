@@ -3,12 +3,24 @@ import WinDock from '@/components/WinDock.vue'
 import WinFiles from '@/components/WinFiles.vue'
 import WinWindow from '@/components/WinWindow.vue'
 import { useConfigStore } from '@/stores/config'
+import { useFilesStore } from '@/stores/files'
 import { useWindowStore } from '@/stores/window'
 import { computed } from 'vue'
 
 const configStore = useConfigStore()
 const windowStore = useWindowStore()
+const filesStore = useFilesStore()
+const desktopFiles = computed(() => {
+  const path = `C:/Users/Administrator/Desktop`
+  const tempFiles = filesStore.directory2Files(path)
+  if (!tempFiles.success || !tempFiles.files) return []
+  return tempFiles.files
+})
 const bgUrl = computed(() => `url(${configStore.config.bgUrl})`)
+
+const setWindowTop = (id: string) => {
+  windowStore.topWindow = id
+}
 </script>
 
 <template>
@@ -17,16 +29,7 @@ const bgUrl = computed(() => `url(${configStore.config.bgUrl})`)
       class="files"
       layout="mediumIcons"
       isColumn
-      :files="[
-        {
-          name: '关于',
-          size: 0,
-          icon: '/icon/folder.svg',
-          type: 'file',
-          child: [],
-          id: 'about-win',
-        },
-      ]"
+      :files="desktopFiles"
       @openFile="windowStore.openNewWindow"
     />
     <WinDock class="dock" />
@@ -36,6 +39,11 @@ const bgUrl = computed(() => `url(${configStore.config.bgUrl})`)
       :title="window.title"
       :icon="window.icon"
       :id="id"
+      :style="{
+        '--zIndex': id === windowStore.topWindow ? 2 : 1,
+      }"
+      class="window"
+      @pointerdown="setWindowTop(id)"
     >
       <component :is="window.component" :props="window.componentProps"></component>
     </WinWindow>
@@ -62,6 +70,9 @@ const bgUrl = computed(() => `url(${configStore.config.bgUrl})`)
     width: 100%;
     left: 0;
     bottom: 10px;
+  }
+  .window {
+    z-index: var(--zIndex);
   }
 }
 </style>

@@ -1,6 +1,6 @@
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
-import type { ExeData, File, Files } from '@/typed/file'
+import type { ExeData, File, Files, Format2App } from '@/typed/file'
 import { useWindowStore } from './window'
 
 export const useFilesStore = defineStore('files', () => {
@@ -107,7 +107,16 @@ export const useFilesStore = defineStore('files', () => {
                   size: 0,
                   icon: 'folder',
                   type: 'folder',
-                  child: [],
+                  child: [
+                    {
+                      name: '关于',
+                      size: 0,
+                      icon: '/icon/folder.svg',
+                      type: 'file',
+                      child: [],
+                      id: 'about-win',
+                    },
+                  ],
                 },
                 {
                   id: 'C:\\Users\\Administrator\\Documents',
@@ -286,14 +295,7 @@ export const useFilesStore = defineStore('files', () => {
     },
   ])
 
-  const format2App = ref<
-    Record<
-      string,
-      (file: File) => {
-        success: boolean
-      }
-    >
-  >({
+  const format2App = ref<Format2App>({
     txt: (file: File) => {
       windowStore.openNewWindow('notepad', {
         file: file,
@@ -309,11 +311,15 @@ export const useFilesStore = defineStore('files', () => {
     },
   })
 
-  function openFile(file: File) {
+  function openFile(file: File, customFormat2App: Format2App) {
     if (file.type != 'file') return { success: false }
     const format = file.name.split('.').pop()
     if (!format) return { success: false }
-    const app = format2App.value[format]
+    const mergeFormat2App = {
+      ...format2App.value,
+      ...customFormat2App,
+    }
+    const app = mergeFormat2App[format]
     if (!app) return { success: false }
     return app(file)
   }
@@ -321,8 +327,9 @@ export const useFilesStore = defineStore('files', () => {
   function directory2Files(directoryStr: string, separator = '/') {
     let currentFiles = filesData.value
     const directorysArray = directoryStr.split(separator)
+    console.log(directorysArray)
     for (const directory of directorysArray) {
-      const tempFiles = filesData.value.find((file) => file.name === directory)
+      const tempFiles = currentFiles.find((file) => file.name === directory)
       if (!tempFiles || !tempFiles.child) return { success: false }
       currentFiles = tempFiles.child
     }

@@ -15,6 +15,7 @@ const lastMousePosition = {
 }
 const windowX = ref(0)
 const windowY = ref(0)
+// 计算窗口位置百分比
 const windowXPercentage = computed(
   () => `${(windowX.value / document.documentElement.clientWidth) * 100}%`,
 )
@@ -25,6 +26,7 @@ let startDrag = false
 const windowTitbar = useTemplateRef('windowTitbar')
 
 const startDragWindow = (event: PointerEvent) => {
+  // 设置窗口位置和鼠标位置
   if (!windowTitbar.value) return
   windowTitbar.value.setPointerCapture(event.pointerId)
   const rect = windowTitbar.value.getBoundingClientRect()
@@ -36,6 +38,7 @@ const startDragWindow = (event: PointerEvent) => {
 }
 
 const dragWindow = (event: PointerEvent) => {
+  // 根据上一次鼠标位置修改窗口位置
   if (!startDrag || !windowTitbar.value) return
   windowX.value += event.clientX - lastMousePosition.x
   windowY.value += event.clientY - lastMousePosition.y

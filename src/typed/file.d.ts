@@ -14,3 +14,10 @@ export interface ExeData {
   _exe: string
   [type: string]: unknown
 }
+
+export type Format2App = Record<
+  string,
+  (file: File) => {
+    success: boolean
+  }
+>

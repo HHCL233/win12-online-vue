@@ -8,6 +8,7 @@ import { windowsMap } from '@/windows'
 export const useWindowStore = defineStore('window', () => {
   const dockStore = useDockStore()
   const windowDatas = ref<Record<string, WindowData>>({})
+  const topWindow = ref('')
 
   function registryWindow(
     name: string,
@@ -31,6 +32,7 @@ export const useWindowStore = defineStore('window', () => {
       component: markRaw(component),
       state: 'normal',
     }
+    topWindow.value = id
     return { success: true }
   }
 
@@ -59,5 +61,5 @@ export const useWindowStore = defineStore('window', () => {
     return { success: true }
   }
 
-  return { windowDatas, registryWindow, openNewWindow }
+  return { windowDatas, registryWindow, openNewWindow, topWindow }
 })
