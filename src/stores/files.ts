@@ -1,11 +1,8 @@
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
-import type { ExeData, File, Files, Format2App } from '@/typed/file'
-import { useWindowStore } from './window'
+import type { ExeData, File, Files, FormatHandlers } from '@/typed/file'
 
 export const useFilesStore = defineStore('files', () => {
-  const windowStore = useWindowStore()
-
   const filesData = ref<Files>([
     {
       id: 'C:',
@@ -115,6 +112,7 @@ export const useFilesStore = defineStore('files', () => {
                       type: 'file',
                       child: [],
                       id: 'about-win',
+                      appId: 'about-win',
                     },
                   ],
                 },
@@ -295,33 +293,28 @@ export const useFilesStore = defineStore('files', () => {
     },
   ])
 
-  const format2App = ref<Format2App>({
-    txt: (file: File) => {
-      windowStore.openNewWindow('notepad', {
-        file: file,
-      })
-      return { success: true }
+  const formatHandlers: FormatHandlers = {
+    txt: (file) => ({ appId: 'notepad', props: { file } }),
+    exe: (file) => {
+      if (!file.content) return null
+      try {
+        const exeData: ExeData = JSON.parse(file.content)
+        return exeData._exe ? { appId: exeData._exe, props: exeData } : null
+      } catch {
+        return null
+      }
     },
-    exe: (file: File) => {
-      if (!file.content) return { success: false }
-      const exeData: ExeData = JSON.parse(file.content)
-      if (!exeData._exe) return { success: false }
-      windowStore.openNewWindow(exeData._exe, exeData)
-      return { success: true }
-    },
-  })
+  }
 
-  function openFile(file: File, customFormat2App: Format2App) {
-    if (file.type != 'file') return { success: false }
+  function openFile(file: File, customHandlers: FormatHandlers = {}) {
+    if (file.type != 'file') return { success: false as const }
     const format = file.name.split('.').pop()
-    if (!format) return { success: false }
-    const mergeFormat2App = {
-      ...format2App.value,
-      ...customFormat2App,
-    }
-    const app = mergeFormat2App[format]
-    if (!app) return { success: false }
-    return app(file)
+    if (!format) return { success: false as const }
+    const handler = { ...formatHandlers, ...customHandlers }[format]
+    if (!handler) return { success: false as const }
+    const intent = handler(file)
+    if (!intent) return { success: false as const }
+    return { success: true as const, intent }
   }
 
   function directory2Files(directoryStr: string, separator = '/') {
@@ -336,5 +329,5 @@ export const useFilesStore = defineStore('files', () => {
     return { success: true, files: currentFiles }
   }
 
-  return { filesData, openFile, format2App, directory2Files }
+  return { filesData, openFile, directory2Files }
 })

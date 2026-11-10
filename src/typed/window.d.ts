@@ -1,20 +1,11 @@
-import type { Component } from 'vue'
-
-export interface WindowData {
-  name: string
+export interface WindowRecord {
+  id: string
+  appId: string
   title: string
   icon: string
-  component: Component
-  componentProps: Record<string, unknown>
-  isShow: boolean
+  props: Record<string, unknown>
   isDockShow: boolean
-  state: 'normal' | 'minimize' | 'maximize'
-  dockId: string
+  z: number
 }
 
-export interface WindowComponentInfo {
-  title: string
-  icon: string
-  component: Component
-  datas: string[]
-}
+export type WindowCreateData = Omit<WindowRecord, 'id' | 'z'>

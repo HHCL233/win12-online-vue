@@ -6,6 +6,7 @@ export interface File {
   type: 'folder' | 'file' | 'driver'
   child?: Files
   content?: string
+  appId?: string
 }
 
 export type Files = File[]
@@ -15,9 +16,10 @@ export interface ExeData {
   [type: string]: unknown
 }
 
-export type Format2App = Record<
-  string,
-  (file: File) => {
-    success: boolean
-  }
->
+// 打开文件后得到的结果 */
+export interface FileLaunchIntent {
+  appId: string
+  props?: Record<string, unknown>
+}
+
+export type FormatHandlers = Record<string, (file: File) => FileLaunchIntent | null>

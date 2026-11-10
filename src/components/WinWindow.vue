@@ -7,7 +7,9 @@ import { computed, ref, useTemplateRef } from 'vue'
 const props = defineProps<{
   icon: string
   title: string
-  id: string
+}>()
+const emit = defineEmits<{
+  close: []
 }>()
 const lastMousePosition = {
   x: 0,
@@ -69,7 +71,7 @@ const endDragWindow = () => {
         <div tabindex="1" class="titbar-btn">
           <Maximize20RegularIcon class="btn-icon" height="1em" />
         </div>
-        <div tabindex="1" class="titbar-btn close-btn">
+        <div tabindex="1" class="titbar-btn close-btn" @click="emit('close')">
           <Dismiss20RegularIcon class="btn-icon" height="1em" />
         </div>
       </div>
